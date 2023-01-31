@@ -30,19 +30,6 @@ if st.button("Show Duration vs Release Year"):
 if st.button("Show Data"):
     st.dataframe(clean_df)
     
-if st.button("Average Releases Comparison"):
-    
-    df_year_count = clean_df.groupby(['release_year']).size().reset_index(name='number_of_movies_released')
-
-    year = st.number_input("Enter The Year", value=2000)
-    result=df_year_count.loc[df_year_count['release_year'] == year,'number_of_movies_released'].values[0]
-    st.write(result)
-    average_num_of_movies = round(df_year_count['number_of_movies_released'].mean())
-
-    df_to_plot = pd.DataFrame([[result, average_num_of_movies]], columns=['Number of Movies Released in The Year', 'Average Number of Movies Released'])
-    st.table(data=df_to_plot)
-    st.bar_chart(df_to_plot)
-
 
 
 if st.button("Show Rating Data"):
@@ -56,3 +43,20 @@ if st.button("Genre Distribution"):
     ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 
     st.pyplot(fig1)
+    
+st.subheader("Find Comparison between number of releases per year and the average number of releases")
+st.write(" ")
+year = st.number_input("Enter The Year", value=2000)
+
+#if st.button("Average Releases Comparison"):
+    
+df_year_count = clean_df.groupby(['release_year']).size().reset_index(name='number_of_movies_released')
+
+    
+result=df_year_count.loc[df_year_count['release_year'] == year,'number_of_movies_released'].values[0]
+st.write("Number of releases in %d  are %d " % (year, result))
+average_num_of_movies = round(df_year_count['number_of_movies_released'].mean())
+
+df_to_plot = pd.DataFrame([[result, average_num_of_movies]], columns=['Number of Movies Released in The Year', 'Average Number of Movies Released'])
+st.table(data=df_to_plot)
+st.bar_chart(df_to_plot)
